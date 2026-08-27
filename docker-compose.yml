@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: foodapp-mysql
+    environment:
+      MYSQL_DATABASE: foodapp
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: foodapp-app
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_NAME: foodapp
+      DB_USER: root
+      DB_PASSWORD: root
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
